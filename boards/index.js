@@ -89,7 +89,12 @@ app.get("/apkVersions", async function (req, res, next) {
 				Size: item.Size,
 			}
 		})
-		res.status(200).json(result);
+
+		var i = {
+			application: result
+		}
+		
+		res.status(200).json(i);
 	}
 	catch (err) {
 		res.status(500).json(err.message);
