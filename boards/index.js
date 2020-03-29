@@ -4,6 +4,7 @@ const app = express();
 const PORT = 5555;
 const DownloadDirectoryDS = require("./DownloadDirectoryDS");
 const BatteryQueries = require("./BatteryQueries");
+const bucketPath = "https://storage.googleapis.com/burner-board/BurnerBoardApps/";
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
@@ -74,6 +75,27 @@ app.get("/:boardID/DownloadDirectoryJSON", async function (req, res, next) {
 
 });
 
+app.get("/apkVersions", async function (req, res, next) {
+	
+	try {
+		
+		var results = await DownloadDirectoryDS.listAPKVerions();
+		var result = results.map((item) => {
+
+			return {
+				URL: bucketPath + item.localName,
+				localName: item.localName,
+				Version: item.Version,
+				Size: item.Size,
+			}
+		})
+		res.status(200).json(result);
+	}
+	catch (err) {
+		res.status(500).json(err.message);
+	}
+});
+ 
 /**
  * Returns a list of Google APIs and the link to the API's docs.
  * @param {Express.Request} req The API request.

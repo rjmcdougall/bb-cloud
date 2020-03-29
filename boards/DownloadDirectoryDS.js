@@ -151,7 +151,10 @@ exports.createNewBoard = async function (deviceID) {
 		var boardQuery;
  
 		boardQuery = datastore.createQuery("board")
-			.filter("bootName", "=", "template");
+			.filter("bootName", "=", "template")
+			.order("Version", {
+				descending: false
+			})
 
 		var results = (await datastore.runQuery(boardQuery))[0][0];
  
@@ -193,6 +196,20 @@ exports.createProfile = async function (boardID, profileID, isGlobal) {
 		throw new Error(error);
 	}
 };
+
+exports.listAPKVerions = async () => {
+	try{
+		var apks;
+
+		apks = datastore.createQuery("apkVersion");
+		var results = await datastore.runQuery(apks);
+
+		return results[0];
+	}
+	catch(error){
+		throw new Error(error);
+	}
+}
 
 exports.listBoards = async function (boardID) {
 	try {
