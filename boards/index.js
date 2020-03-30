@@ -1,9 +1,8 @@
-var express = require("express");
- 
+const express = require("express");
 const app = express();
 const PORT = 5555;
 const DownloadDirectoryDS = require("./DownloadDirectoryDS");
-const BatteryQueries = require("./BatteryQueries");
+
 const bucketPath = "https://storage.googleapis.com/burner-board/BurnerBoardApps/";
 
 app.listen(PORT, () => {
@@ -14,17 +13,6 @@ app.get("/", async (req, res, next) => {
 	console.log(req.protocol + "://"+ req.get('Host') + req.url);
 	try {
         var i = await DownloadDirectoryDS.listBoards(null);
-		res.status(200).json(i);
-	}
-	catch (err) {
-		res.status(500).json(err.message);
-	}
-});
-
-app.get("/locations/", async (req, res, next) => {
-	console.log(req.protocol + "://"+ req.get('Host') + req.url);
-	try {
-		var i = await BatteryQueries.queryBoardLocations();
 		res.status(200).json(i);
 	}
 	catch (err) {
@@ -99,20 +87,4 @@ app.get("/apkVersions", async (req, res, next) => {
 	}
 });
  
-/**
- * Returns a list of Google APIs and the link to the API's docs.
- * @param {Express.Request} req The API request.
- * @param {Express.Response} res The API response.
- */
-listGoogleAPIs = async (req, res) => {
-	let sum = 0;
-	for (let i = 0; i < 10; ++i) {
-	  sum += i;
-	}
-	res.send({ sum });
-  };
-
-module.exports = {
-	app,
-	listGoogleAPIs
-};
+module.exports = {app};
