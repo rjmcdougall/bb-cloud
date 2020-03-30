@@ -151,14 +151,18 @@ exports.createNewBoard = async function (deviceID) {
 		var boardQuery;
  
 		boardQuery = datastore.createQuery("board")
-			.filter("bootName", "=", "template")
-			.order("Version", {
-				descending: false
-			})
+			.filter("bootName", "=", "template");
 
 		var results = (await datastore.runQuery(boardQuery))[0][0];
  
+		var addressQuery = datastore.createQuery("board")
+			.order("address", {
+				descending: true
+			});
+		var address =  (await datastore.runQuery(addressQuery))[0][0].address;
+		
 		results.bootName = deviceID;
+		results.address = address + 1;
 
 		var results = await datastore
 			.insert({

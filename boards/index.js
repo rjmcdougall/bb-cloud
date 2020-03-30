@@ -10,7 +10,7 @@ app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 
-app.get("/", async function (req, res, next) {
+app.get("/", async (req, res, next) => {
 	console.log(req.protocol + "://"+ req.get('Host') + req.url);
 	try {
         var i = await DownloadDirectoryDS.listBoards(null);
@@ -21,7 +21,7 @@ app.get("/", async function (req, res, next) {
 	}
 });
 
-app.get("/locations/", async function (req, res, next) {
+app.get("/locations/", async (req, res, next) => {
 	console.log(req.protocol + "://"+ req.get('Host') + req.url);
 	try {
 		var i = await BatteryQueries.queryBoardLocations();
@@ -32,12 +32,10 @@ app.get("/locations/", async function (req, res, next) {
 	}
 });
 
-app.get("/CreateBoard/:deviceID", async function (req, res, next) {
+app.get("/CreateBoard/:deviceID", async (req, res, next) => {
 	console.log(req.protocol + "://"+ req.get('Host') + req.url);
 	var deviceID = req.params.deviceID;
-
-	const DownloadDirectoryDS = require("./DownloadDirectoryDS");
-	 
+ 
 	try {
 		var i = await DownloadDirectoryDS.createNewBoard(deviceID);
 		res.status(200).json(i);
@@ -47,7 +45,7 @@ app.get("/CreateBoard/:deviceID", async function (req, res, next) {
 	}
 });
 
-app.get("/:boardID/DownloadDirectoryJSON", async function (req, res, next) {
+app.get("/:boardID/DownloadDirectoryJSON", async (req, res, next) => {
 	console.log(req.protocol + "://"+ req.get('Host') + req.url);
 
 	var boardID = req.params.boardID;
@@ -75,7 +73,7 @@ app.get("/:boardID/DownloadDirectoryJSON", async function (req, res, next) {
 
 });
 
-app.get("/apkVersions", async function (req, res, next) {
+app.get("/apkVersions", async (req, res, next) => {
 	
 	try {
 		
