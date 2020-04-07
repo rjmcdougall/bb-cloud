@@ -22,6 +22,7 @@ exports.createNewBoard = async (deviceID) => {
 		
 		results.bootName = deviceID;
 		results.address = address + 1;
+		results.createdDate = new Date().toLocaleString();
 
 		var results = await datastore
 			.insert({
