@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express();
 const PORT = 5555;
-const DownloadDirectoryDS = require("./DownloadDirectoryDS");
-
+const DownloadDirectoryDS = require("./DownloadDirectoryDS"); 
+app.use(express.json());
 const bucketPath = "https://storage.googleapis.com/burner-board/BurnerBoardApps/";
 
 app.listen(PORT, () => {
@@ -26,6 +26,20 @@ app.get("/CreateBoard/:deviceID", async (req, res, next) => {
  
 	try {
 		var i = await DownloadDirectoryDS.createNewBoard(deviceID);
+		res.status(200).json(i);
+	}
+	catch (err) {
+		res.status(500).json(err.message);
+	}
+});
+
+app.post("/UpdateProfile/:profileID", async (req, res, next) => {
+	console.log(req.protocol + "://"+ req.get('Host') + req.url);
+	var profileID = req.params.profileID;
+ 
+	try {
+		var i = await DownloadDirectoryDS.deleteAllProfileMedia("video", profileID);
+		var s = await DownloadDirectoryDS.InsertProfile(profileID, "video", req.body.video);
 		res.status(200).json(i);
 	}
 	catch (err) {

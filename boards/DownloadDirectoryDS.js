@@ -36,7 +36,74 @@ exports.createNewBoard = async (deviceID) => {
 		return error;
 	}
 };
+
+exports.deleteAllProfileMedia = async function (mediaType, profileID) {
+	try {
+		const deleteMediaQuery = datastore.createQuery(mediaType)
+			.filter("profile", "=", profileID);
+
+		var results = await datastore.runQuery(deleteMediaQuery);
+
+		var results2 = await datastore.delete(results[0].map((item) => {
+			return item[datastore.KEY];
+		}));
+
+		return "Deleted " + results2[0].length + " " + mediaType + " from " + profileID;
+	}
+	catch (error) {
+		throw new Error(error);
+	}
+};
+
+exports.createProfile = async function (boardID, profileID, isGlobal) {
+	try {
+		var i = 2;
+		var results = await datastore
+			.save({
+				key: datastore.key(["profile"]),
+				data: {
+					name: profileID,
+					board: boardID,
+					isGlobal: isGlobal,
+				},
+			});
+
+		if (isGlobal)
+			return "global profile " + profileID + " created";
+		else
+			return "profile " + profileID + " created for board " + boardID;
+
+	}
+	catch (error) {
+		throw new Error(error);
+	}
+};
+
+exports.InsertProfile = async function (profileID, mediaType, algorithms) {
+
+	try {
  
+		var mappedMediaArray = new Array();
+
+		for (var i = 0; i < algorithms.length; i++) {
+			mappedMediaArray.push({
+				key: datastore.key(mediaType),
+				data: {
+					algorithm: algorithms[i].algorithm,
+					ordinal: i,
+					profile: profileID,
+				}
+			});
+		}
+ 
+		await datastore.save(mappedMediaArray); 
+		console.log("added " + JSON.stringify(mappedMediaArray));
+	}
+	catch (error) {
+		throw new Error(error);
+	}
+}; 
+
 exports.listAPKVerions = async () => {
 	try{
 		var apks;
