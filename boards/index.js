@@ -38,8 +38,9 @@ app.post("/UpdateProfile/:profileID", async (req, res, next) => {
 	var profileID = req.params.profileID;
  
 	try {
-		var i = await DownloadDirectoryDS.deleteAllProfileMedia("video", profileID);
-		var s = await DownloadDirectoryDS.InsertProfile(profileID, "video", req.body.video);
+		var i = new Array();
+		await DownloadDirectoryDS.deleteAllProfileMedia("video", profileID);
+		i.push(await DownloadDirectoryDS.InsertProfile(profileID, "video", req.body.video));
 		res.status(200).json(i);
 	}
 	catch (err) {

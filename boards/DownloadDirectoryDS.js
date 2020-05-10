@@ -40,7 +40,8 @@ exports.createNewBoard = async (deviceID) => {
 exports.deleteAllProfileMedia = async function (mediaType, profileID) {
 	try {
 		const deleteMediaQuery = datastore.createQuery(mediaType)
-			.filter("profile", "=", profileID);
+			.filter("profile", "=", profileID)
+			.filter("UpdatedByScript","=",true);
 
 		var results = await datastore.runQuery(deleteMediaQuery);
 
@@ -48,7 +49,7 @@ exports.deleteAllProfileMedia = async function (mediaType, profileID) {
 			return item[datastore.KEY];
 		}));
 
-		return "Deleted " + results2[0].length + " " + mediaType + " from " + profileID;
+		return "Deleted algorithms from " + profileID;
 	}
 	catch (error) {
 		throw new Error(error);
@@ -92,12 +93,15 @@ exports.InsertProfile = async function (profileID, mediaType, algorithms) {
 					algorithm: algorithms[i].algorithm,
 					ordinal: i,
 					profile: profileID,
+					Length: algorithms[i].Length,
+					UpdatedByScript: true,
 				}
 			});
 		}
  
 		await datastore.save(mappedMediaArray); 
 		console.log("added " + JSON.stringify(mappedMediaArray));
+		return JSON.stringify(mappedMediaArray);
 	}
 	catch (error) {
 		throw new Error(error);
