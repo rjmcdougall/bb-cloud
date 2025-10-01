@@ -101,5 +101,19 @@ app.get("/apkVersions", async (req, res, next) => {
 		res.status(500).json(err.message);
 	}
 });
+
+app.get("/status", async (req, res, next) => {
+	console.log(req.protocol + "://"+ req.get('Host') + req.url);
+	
+	try {
+		var meshData = await DownloadDirectoryDS.listMeshData();
+		res.status(200).json({
+			mesh: meshData
+		});
+	}
+	catch (err) {
+		res.status(500).json(err.message);
+	}
+});
  
 module.exports = {app};

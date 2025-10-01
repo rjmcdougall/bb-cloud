@@ -193,6 +193,20 @@ exports.listMedia = async function (boardID, profileID, mediaType) {
 	}
 };
 
+exports.listMeshData = async () => {
+	try {
+		// Query all records from the mesh table
+		const meshQuery = datastore.createQuery("mesh");
+		const results = await datastore.runQuery(meshQuery);
+		
+		// Return the raw data from the mesh table
+		return results[0];
+	}
+	catch (error) {
+		throw new Error(error);
+	}
+};
+
 exports.DirectoryJSON = async function (boardID, profileID) {
 
 	try {
