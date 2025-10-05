@@ -8,9 +8,9 @@ set -e
 # Configuration
 PROJECT_ID=${GCP_PROJECT:-""}
 REGION=${GCP_REGION:-"us-central1"}
-SERVICE_NAME=${SERVICE_NAME:-"mesh-mqtt-processor"}
+SERVICE_NAME=${SERVICE_NAME:-"bb-mesh-service"}
 REGION=${GCP_REGION:-"us-central1"}
-REPO_NAME="mesh-mqtt"
+REPO_NAME="bb-mesh"
 IMAGE_NAME="${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPO_NAME}/${SERVICE_NAME}"
 
 # Colors for output
@@ -130,7 +130,7 @@ deploy_service() {
 
 # Main deployment function
 main() {
-    log_info "Starting deployment of Mesh MQTT Processor to Google Cloud Run"
+    log_info "Starting deployment of BB Mesh Service to Google Cloud Run"
     log_info "Project: $PROJECT_ID"
     log_info "Region: $REGION"
     log_info "Service: $SERVICE_NAME"
@@ -166,7 +166,7 @@ while [[ $# -gt 0 ]]; do
             echo "Options:"
             echo "  --project PROJECT_ID    Set GCP project ID"
             echo "  --region REGION         Set deployment region (default: us-central1)"
-            echo "  --service SERVICE_NAME  Set service name (default: mesh-mqtt-processor)"
+            echo "  --service SERVICE_NAME  Set service name (default: bb-mesh-service)"
             echo "  -h, --help             Show this help message"
             echo ""
             echo "Environment variables:"

@@ -1,7 +1,7 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: mesh-mqtt-processor
+  name: bb-mesh-service
   annotations:
     run.googleapis.com/ingress: all
 spec:
@@ -19,7 +19,7 @@ spec:
       containerConcurrency: 1
       timeoutSeconds: 3600
       containers:
-      - image: us-central1-docker.pkg.dev/burner-board/mesh-mqtt/mesh-mqtt-processor:latest
+      - image: us-central1-docker.pkg.dev/burner-board/bb-mesh/bb-mesh-service:latest
         ports:
         - containerPort: 8080
         env:
